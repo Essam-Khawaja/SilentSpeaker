@@ -76,7 +76,7 @@ def main():
     options = vision.HandLandmarkerOptions(
         base_options=base_options,
         running_mode=vision.RunningMode.VIDEO,
-        num_hands=1,
+        num_hands=2,
         min_hand_detection_confidence=min_detection_confidence,
         min_hand_presence_confidence=min_tracking_confidence,
         min_tracking_confidence=min_tracking_confidence
@@ -313,7 +313,7 @@ def select_mode(key, mode):
     
     # Letters a-z (for ASL alphabet or more gestures)
     elif 97 <= key <= 122:  # a ~ z
-        number = key - 87  # maps a=10, b=11, ..., z=35
+        number = key - 87 + 1 # maps a=10, b=11, ..., z=35
     
     # Mode controls
     if key == 110:  # n - normal mode
