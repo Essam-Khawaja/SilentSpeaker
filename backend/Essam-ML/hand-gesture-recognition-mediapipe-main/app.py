@@ -12,6 +12,7 @@ import numpy as np
 import mediapipe as mp
 
 from utils import CvFpsCalc
+
 from model import KeyPointClassifier
 from model import PointHistoryClassifier
 
@@ -75,7 +76,7 @@ def main():
     options = vision.HandLandmarkerOptions(
         base_options=base_options,
         running_mode=vision.RunningMode.VIDEO,
-        num_hands=2,
+        num_hands=1,
         min_hand_detection_confidence=min_detection_confidence,
         min_hand_presence_confidence=min_tracking_confidence,
         min_tracking_confidence=min_tracking_confidence
