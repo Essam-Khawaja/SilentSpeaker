@@ -8,7 +8,7 @@
     "model_config": {
       "class_name": "Sequential",
       "config": {
-        "name": "sequential_1",
+        "name": "sequential_2",
         "trainable": true,
         "dtype": {
           "module": "keras",
@@ -29,7 +29,7 @@
               "dtype": "float32",
               "sparse": false,
               "ragged": false,
-              "name": "input_layer_1",
+              "name": "input_layer_2",
               "optional": false,
               "batch_input_shape": [
                 null,
@@ -40,7 +40,7 @@
           {
             "class_name": "Dense",
             "config": {
-              "name": "dense_4",
+              "name": "dense_8",
               "trainable": true,
               "dtype": {
                 "module": "keras",
@@ -77,7 +77,7 @@
           {
             "class_name": "BatchNormalization",
             "config": {
-              "name": "batch_normalization_3",
+              "name": "batch_normalization_6",
               "trainable": true,
               "dtype": {
                 "module": "keras",
@@ -126,7 +126,7 @@
           {
             "class_name": "Activation",
             "config": {
-              "name": "activation_3",
+              "name": "activation_6",
               "trainable": true,
               "dtype": {
                 "module": "keras",
@@ -142,7 +142,7 @@
           {
             "class_name": "Dropout",
             "config": {
-              "name": "dropout_3",
+              "name": "dropout_6",
               "trainable": true,
               "dtype": {
                 "module": "keras",
@@ -160,7 +160,7 @@
           {
             "class_name": "Dense",
             "config": {
-              "name": "dense_5",
+              "name": "dense_9",
               "trainable": true,
               "dtype": {
                 "module": "keras",
@@ -197,7 +197,7 @@
           {
             "class_name": "BatchNormalization",
             "config": {
-              "name": "batch_normalization_4",
+              "name": "batch_normalization_7",
               "trainable": true,
               "dtype": {
                 "module": "keras",
@@ -246,7 +246,7 @@
           {
             "class_name": "Activation",
             "config": {
-              "name": "activation_4",
+              "name": "activation_7",
               "trainable": true,
               "dtype": {
                 "module": "keras",
@@ -262,7 +262,7 @@
           {
             "class_name": "Dropout",
             "config": {
-              "name": "dropout_4",
+              "name": "dropout_7",
               "trainable": true,
               "dtype": {
                 "module": "keras",
@@ -280,7 +280,7 @@
           {
             "class_name": "Dense",
             "config": {
-              "name": "dense_6",
+              "name": "dense_10",
               "trainable": true,
               "dtype": {
                 "module": "keras",
@@ -317,7 +317,7 @@
           {
             "class_name": "BatchNormalization",
             "config": {
-              "name": "batch_normalization_5",
+              "name": "batch_normalization_8",
               "trainable": true,
               "dtype": {
                 "module": "keras",
@@ -366,7 +366,7 @@
           {
             "class_name": "Activation",
             "config": {
-              "name": "activation_5",
+              "name": "activation_8",
               "trainable": true,
               "dtype": {
                 "module": "keras",
@@ -382,7 +382,7 @@
           {
             "class_name": "Dropout",
             "config": {
-              "name": "dropout_5",
+              "name": "dropout_8",
               "trainable": true,
               "dtype": {
                 "module": "keras",
@@ -400,7 +400,7 @@
           {
             "class_name": "Dense",
             "config": {
-              "name": "dense_7",
+              "name": "dense_11",
               "trainable": true,
               "dtype": {
                 "module": "keras",
@@ -455,7 +455,7 @@
         "class_name": "Adam",
         "config": {
           "name": "adam",
-          "learning_rate": 0.0001250000059371814,
+          "learning_rate": 0.0005000000237487257,
           "weight_decay": null,
           "clipnorm": null,
           "global_clipnorm": null,
@@ -480,121 +480,91 @@
       ],
       "weights": [
         {
-          "name": "batch_normalization_3/gamma",
+          "name": "batch_normalization_6/gamma",
           "shape": [
             128
           ],
           "dtype": "float32"
         },
         {
-          "name": "batch_normalization_3/beta",
+          "name": "batch_normalization_6/beta",
           "shape": [
             128
           ],
           "dtype": "float32"
         },
         {
-          "name": "batch_normalization_3/moving_mean",
+          "name": "batch_normalization_6/moving_mean",
           "shape": [
             128
           ],
           "dtype": "float32"
         },
         {
-          "name": "batch_normalization_3/moving_variance",
+          "name": "batch_normalization_6/moving_variance",
           "shape": [
             128
           ],
           "dtype": "float32"
         },
         {
-          "name": "batch_normalization_4/gamma",
+          "name": "batch_normalization_7/gamma",
           "shape": [
             64
           ],
           "dtype": "float32"
         },
         {
-          "name": "batch_normalization_4/beta",
+          "name": "batch_normalization_7/beta",
           "shape": [
             64
           ],
           "dtype": "float32"
         },
         {
-          "name": "batch_normalization_4/moving_mean",
+          "name": "batch_normalization_7/moving_mean",
           "shape": [
             64
           ],
           "dtype": "float32"
         },
         {
-          "name": "batch_normalization_4/moving_variance",
+          "name": "batch_normalization_7/moving_variance",
           "shape": [
             64
           ],
           "dtype": "float32"
         },
         {
-          "name": "batch_normalization_5/gamma",
+          "name": "batch_normalization_8/gamma",
           "shape": [
             32
           ],
           "dtype": "float32"
         },
         {
-          "name": "batch_normalization_5/beta",
+          "name": "batch_normalization_8/beta",
           "shape": [
             32
           ],
           "dtype": "float32"
         },
         {
-          "name": "batch_normalization_5/moving_mean",
+          "name": "batch_normalization_8/moving_mean",
           "shape": [
             32
           ],
           "dtype": "float32"
         },
         {
-          "name": "batch_normalization_5/moving_variance",
+          "name": "batch_normalization_8/moving_variance",
           "shape": [
             32
           ],
           "dtype": "float32"
         },
         {
-          "name": "dense_4/kernel",
-          "shape": [
-            42,
-            128
-          ],
-          "dtype": "float32"
-        },
-        {
-          "name": "dense_4/bias",
-          "shape": [
-            128
-          ],
-          "dtype": "float32"
-        },
-        {
-          "name": "dense_5/kernel",
-          "shape": [
-            128,
-            64
-          ],
-          "dtype": "float32"
-        },
-        {
-          "name": "dense_5/bias",
-          "shape": [
-            64
-          ],
-          "dtype": "float32"
-        },
-        {
-          "name": "dense_6/kernel",
+          "name": "dense_10/kernel",
           "shape": [
             64,
             32
@@ -602,14 +572,14 @@
           "dtype": "float32"
         },
         {
-          "name": "dense_6/bias",
+          "name": "dense_10/bias",
           "shape": [
             32
           ],
           "dtype": "float32"
         },
         {
-          "name": "dense_7/kernel",
+          "name": "dense_11/kernel",
           "shape": [
             32,
             37
@@ -617,9 +587,39 @@
           "dtype": "float32"
         },
         {
-          "name": "dense_7/bias",
+          "name": "dense_11/bias",
           "shape": [
             37
+          ],
+          "dtype": "float32"
+        },
+        {
+          "name": "dense_8/kernel",
+          "shape": [
+            42,
+            128
+          ],
+          "dtype": "float32"
+        },
+        {
+          "name": "dense_8/bias",
+          "shape": [
+            128
+          ],
+          "dtype": "float32"
+        },
+        {
+          "name": "dense_9/kernel",
+          "shape": [
+            128,
+            64
+          ],
+          "dtype": "float32"
+        },
+        {
+          "name": "dense_9/bias",
+          "shape": [
+            64
           ],
           "dtype": "float32"
         }
