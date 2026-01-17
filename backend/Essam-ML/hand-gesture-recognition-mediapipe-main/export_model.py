@@ -6,9 +6,9 @@ import json
 
 # Paths
 KERAS_MODEL = 'model/keypoint_classifier/keypoint_classifier.keras'
-TFJS_OUTPUT = '../../../frontend/public/models/keypoint_classifier'
+TFJS_OUTPUT = '../../../frontend/asl-frontend/public/models/keypoint_classifier'
 LABELS_SRC = 'model/keypoint_classifier/keypoint_classifier_label.csv'
-LABELS_DST = '../../../frontend/public/models/labels.csv'
+LABELS_DST = '../../../frontend/asl-frontend/public/models/labels.csv'
 
 print("🔄 Converting model to TensorFlow.js...")
 
