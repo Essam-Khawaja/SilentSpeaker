@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import os
 import numpy as np
 import tensorflow as tf
 
@@ -7,13 +8,19 @@ import tensorflow as tf
 class PointHistoryClassifier(object):
     def __init__(
         self,
-        model_path='/Users/syedessamuddinkhawaja/Desktop/Extra Projects/Unspoken/backend/Essam-ML/hand-gesture-recognition-mediapipe-main/model/point_history_classifier/point_history_classifier.tflite',
+        model_path=None,
         score_th=0.5,
         invalid_value=0,
         num_threads=1,
     ):
-        self.interpreter = tf.lite.Interpreter(model_path=model_path,
-                                               num_threads=num_threads)
+        if model_path is None:
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            model_path = os.path.join(script_dir, 'point_history_classifier.tflite')
+
+        self.interpreter = tf.lite.Interpreter(
+            model_path=model_path,
+            num_threads=num_threads
+        )
 
         self.interpreter.allocate_tensors()
         self.input_details = self.interpreter.get_input_details()
@@ -21,6 +28,7 @@ class PointHistoryClassifier(object):
 
         self.score_th = score_th
         self.invalid_value = invalid_value
+
 
     def __call__(
         self,
