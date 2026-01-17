@@ -304,15 +304,37 @@ def pre_process_point_history(image, point_history):
     return temp_point_history
 
 
+def select_mode(key, mode):
+    number = -1
+    
+    # Numbers 0-9
+    if 48 <= key <= 57:  # 0 ~ 9
+        number = key - 48
+    
+    # Letters a-z (for ASL alphabet or more gestures)
+    elif 97 <= key <= 122:  # a ~ z
+        number = key - 87  # maps a=10, b=11, ..., z=35
+    
+    # Mode controls
+    if key == 110:  # n - normal mode
+        mode = 0
+    if key == 107:  # k - keypoint logging
+        mode = 1
+    if key == 104:  # h - history logging
+        mode = 2
+    
+    return number, mode
+
+
 def logging_csv(number, mode, landmark_list, point_history_list):
     if mode == 0:
         pass
-    if mode == 1 and (0 <= number <= 9):
+    if mode == 1 and (0 <= number <= 35):  # Support 0-9 and a-z
         csv_path = 'model/keypoint_classifier/keypoint.csv'
         with open(csv_path, 'a', newline="") as f:
             writer = csv.writer(f)
             writer.writerow([number, *landmark_list])
-    if mode == 2 and (0 <= number <= 9):
+    if mode == 2 and (0 <= number <= 35):
         csv_path = 'model/point_history_classifier/point_history.csv'
         with open(csv_path, 'a', newline="") as f:
             writer = csv.writer(f)
