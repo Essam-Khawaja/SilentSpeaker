@@ -1,10 +1,38 @@
-// app/page.tsx
-import ASLDetector from "../components/ASLDetector";
+// App.jsx - Main component
+"use client";
 
-export default function Home() {
+import { useState } from "react";
+import Header from "../components/Header";
+import SignToSpeech from "../components/SignToSpeech";
+import SpeechToSign from "../components/SpeechToSign";
+
+export default function ASLTranslator() {
+  const [mode, setMode] = useState("sign-to-speech");
+  const [fps, setFps] = useState(0);
+  const [model, setModel] = useState(null);
+  const [mediaPipeLoaded, setMediaPipeLoaded] = useState(false);
+
   return (
-    <main className="min-h-screen bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-600">
-      <ASLDetector />
-    </main>
+    <div className="min-h-screen bg-background">
+      <Header
+        mode={mode}
+        setMode={setMode}
+        fps={fps}
+        model={model}
+        mediaPipeLoaded={mediaPipeLoaded}
+      />
+
+      <main className="max-w-7xl mx-auto px-6 py-8">
+        {mode === "sign-to-speech" ? (
+          <SignToSpeech
+            setFps={setFps}
+            setModel={setModel}
+            setMediaPipeLoaded={setMediaPipeLoaded}
+          />
+        ) : (
+          <SpeechToSign />
+        )}
+      </main>
+    </div>
   );
 }
