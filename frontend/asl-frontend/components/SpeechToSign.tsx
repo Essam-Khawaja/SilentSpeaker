@@ -1,6 +1,4 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Mic, Volume2, Trash2 } from "lucide-react";
 
 const API_BASE =
@@ -13,152 +11,41 @@ export default function SpeechToSign() {
   const [transcript, setTranscript] = useState<string>("");
   const [isListening, setIsListening] = useState<boolean>(false);
 
-  const recognitionRef = useRef<WebSpeechRecognition | null>(null);
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     const SpeechRecognition =
+  //       window.SpeechRecognition || window.webkitSpeechRecognition;
 
-  const transcriptRef = useRef<string>("");
+  //     if (SpeechRecognition) {
+  //       recognitionRef.current = new SpeechRecognition();
+  //       recognitionRef.current!.continuous = true;
+  //       recognitionRef.current!.interimResults = true;
 
-  // When we stop listening, we want to generate video AFTER onend fires
-  const shouldGenerateOnEndRef = useRef<boolean>(false);
+  //       recognitionRef.current!.onresult = (event) => {
+  //         let finalTranscript = "";
 
-  const [videoUrl, setVideoUrl] = useState<string | null>(null);
-  const [translatedWords, setTranslatedWords] = useState<string[]>([]);
-  const [skippedWords, setSkippedWords] = useState<string[]>([]);
-  const [isGenerating, setIsGenerating] = useState<boolean>(false);
+  //         for (let i = event.resultIndex; i < event.results.length; i++) {
+  //           const transcript = event.results[i][0].transcript;
+  //           if (event.results[i].isFinal) {
+  //             finalTranscript += transcript + " ";
+  //           }
+  //         }
 
-  const [statusMsg, setStatusMsg] = useState<string>("");
-  const [errorMsg, setErrorMsg] = useState<string>("");
+  //         if (finalTranscript) {
+  //           setTranscript((prev) => prev + finalTranscript);
+  //           const letters = finalTranscript
+  //             .toLowerCase()
+  //             .split("")
+  //             .filter((char) => /[a-z\s]/.test(char));
+  //           setSentence((prev) => [...prev, ...letters]);
+  //         }
+  //       };
 
-  async function generateSignVideo(text: string) {
-    const cleaned = (text || "").trim();
-
-    if (!cleaned) {
-      setStatusMsg("Nothing to translate yet.");
-      setErrorMsg("");
-      setIsGenerating(false);
-      return;
-    }
-
-    setIsGenerating(true);
-    setStatusMsg("Translating to sign video...");
-    setErrorMsg("");
-    setVideoUrl(null);
-    setTranslatedWords([]);
-    setSkippedWords([]);
-
-    try {
-      const res = await fetch(
-        `${API_BASE}/translate?text=${encodeURIComponent(cleaned)}`,
-        { method: "GET" },
-      );
-
-      if (!res.ok) {
-        throw new Error(`Backend error: ${res.status} ${res.statusText}`);
-      }
-
-      const data = await res.json();
-
-      const tw: string[] = data?.translated_words || [];
-      const sw: string[] = data?.skipped_words || [];
-
-      setTranslatedWords(tw);
-      setSkippedWords(sw);
-
-      if (data?.success && data?.video_url) {
-        // cache-bust so new mp4 always loads
-        const url = `${API_BASE}${data.video_url}?t=${Date.now()}`;
-        setVideoUrl(url);
-        setStatusMsg("Video generated ✅");
-        setErrorMsg("");
-      } else {
-        setVideoUrl(null);
-        setStatusMsg("No video generated.");
-        setErrorMsg(data?.error || "No translatable words found.");
-      }
-    } catch (e: any) {
-      console.error(e);
-      setVideoUrl(null);
-      setStatusMsg("Translation failed ❌");
-      setErrorMsg(String(e?.message || e));
-    } finally {
-      setIsGenerating(false);
-    }
-  }
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const SpeechRecognition =
-      (window as any).SpeechRecognition ||
-      (window as any).webkitSpeechRecognition;
-
-    if (!SpeechRecognition) {
-      setErrorMsg("SpeechRecognition not supported in this browser.");
-      return;
-    }
-
-    const rec: WebSpeechRecognition = new SpeechRecognition();
-    rec.continuous = true;
-    rec.interimResults = true;
-
-    rec.onresult = (event: any) => {
-      let finalTranscript = "";
-
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        const chunk = event.results[i][0].transcript as string;
-        if (event.results[i].isFinal) finalTranscript += chunk + " ";
-      }
-
-      if (!finalTranscript) return;
-
-      // Update ref immediately (no React delay)
-      transcriptRef.current = (
-        transcriptRef.current +
-        " " +
-        finalTranscript
-      ).trim();
-      setTranscript(transcriptRef.current);
-    };
-
-    rec.onerror = (e: any) => {
-      setIsListening(false);
-      setStatusMsg("Stopped listening.");
-      setErrorMsg(e?.error ? `Mic error: ${e.error}` : "");
-      shouldGenerateOnEndRef.current = false;
-    };
-
-    rec.onend = async () => {
-      // Recognition ends asynchronously; generate here if we requested it.
-      setIsListening(false);
-
-      if (shouldGenerateOnEndRef.current) {
-        shouldGenerateOnEndRef.current = false;
-
-        // tiny delay lets some browsers flush last final chunk
-        await new Promise((r) => setTimeout(r, 250));
-
-        const textToTranslate = (
-          transcriptRef.current ||
-          transcript ||
-          ""
-        ).trim();
-        console.log("SENDING TO BACKEND:", textToTranslate);
-
-        await generateSignVideo(textToTranslate);
-      }
-    };
-
-    recognitionRef.current = rec;
-
-    // cleanup
-    return () => {
-      try {
-        rec.onresult = null;
-        rec.onerror = null;
-        rec.onend = null;
-        rec.stop?.();
-      } catch {}
-    };
-  }, []);
+  //       recognitionRef.current!.onerror = () => setIsListening(false);
+  //       recognitionRef.current!.onend = () => setIsListening(false);
+  //     }
+  //   }
+  // }, []);
 
   const startListening = () => {
     if (!recognitionRef.current) return;
@@ -183,42 +70,11 @@ export default function SpeechToSign() {
   const stopListeningAndGenerate = () => {
     if (!recognitionRef.current) return;
 
-    // Tell onend() to generate
-    shouldGenerateOnEndRef.current = true;
-
-    setStatusMsg("Stopping… preparing translation.");
-    setErrorMsg("");
-
-    recognitionRef.current.stop();
-    setIsListening(false);
-  };
-
-  const toggleListening = () => {
-    if (isGenerating) return;
-
-    if (isListening) stopListeningAndGenerate();
-    else startListening();
-  };
-
-  const clearAll = () => {
-    setSentence([]);
-    setTranscript("");
-    transcriptRef.current = "";
-
-    setVideoUrl(null);
-    setTranslatedWords([]);
-    setSkippedWords([]);
-
-    setStatusMsg("");
-    setErrorMsg("");
-  };
-
-  const speakOut = () => {
-    const text = (transcriptRef.current || transcript || "").trim();
-    if ("speechSynthesis" in window && text.length > 0) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 0.9;
-      window.speechSynthesis.speak(utterance);
+    if (isListening) {
+      // recognitionRef.current!.stop();
+    } else {
+      // recognitionRef.current!.start();
+      setTranscript("");
     }
   };
 
