@@ -6,10 +6,12 @@ import Header from "../components/Header";
 import SignToSpeech from "../components/SignToSpeech";
 import SpeechToSign from "../components/SpeechToSign";
 
+type Mode = "sign-to-speech" | "speech-to-sign";
+
 export default function ASLTranslator() {
   const [mode, setMode] = useState("sign-to-speech");
   const [fps, setFps] = useState(0);
-  const [model, setModel] = useState(null);
+  const [model, setModel] = useState<Mode>("sign-to-speech");
   const [mediaPipeLoaded, setMediaPipeLoaded] = useState(false);
 
   return (
