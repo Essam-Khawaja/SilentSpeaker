@@ -67,7 +67,6 @@ def main():
     # Download hand_landmarker.task from:
     # https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/latest/hand_landmarker.task
     
-        # Add this near the top with other imports
     script_dir = os.path.dirname(os.path.abspath(__file__))
     model_path = os.path.join(script_dir, 'hand_landmarker.task')
 

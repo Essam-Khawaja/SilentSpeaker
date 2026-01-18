@@ -10,19 +10,14 @@ TFJS_OUTPUT = '../../../frontend/asl-frontend/public/models/keypoint_classifier'
 LABELS_SRC = 'model/keypoint_classifier/keypoint_classifier_label.csv'
 LABELS_DST = '../../../frontend/asl-frontend/public/models/labels.csv'
 
-print("🔄 Converting model to TensorFlow.js...")
-
-# Load the original Keras model
 original_model = tf.keras.models.load_model(KERAS_MODEL)
-print(f"✓ Original model loaded")
+print(f"Original model loaded")
 print(f"  Input shape: {original_model.input_shape}")
 print(f"  Output shape: {original_model.output_shape}")
 
-# Create output directory
 os.makedirs(TFJS_OUTPUT, exist_ok=True)
 
 # Export the model as-is first
-print("\n💾 Converting to TensorFlow.js format...")
 tfjs.converters.save_keras_model(original_model, TFJS_OUTPUT)
 print(f"✓ Initial model saved to: {TFJS_OUTPUT}")
 
@@ -90,9 +85,3 @@ for file in sorted(os.listdir(TFJS_OUTPUT)):
     size = os.path.getsize(filepath)
     print(f"  - {file} ({size:,} bytes)")
 print(f"  - {LABELS_DST}")
-
-print("\n📋 Model Summary:")
-print(f"  Input: [batch_size, 42]")
-print(f"  Output: [batch_size, {original_model.output_shape[1]}]")
-print(f"  Total parameters: {original_model.count_params():,}")
-print("\n✨ Your Next.js app can now use the model!")
