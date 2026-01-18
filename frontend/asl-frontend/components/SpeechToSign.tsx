@@ -4,7 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { Mic, Volume2, Trash2 } from "lucide-react";
 
 const API_BASE =
-  process.env.NEXT_PUBLIC_SIGN_API_BASE || "http://localhost:8000";
+  process.env.NEXT_PUBLIC_SIGN_API_BASE ||
+  "http://localhost:8000" ||
+  "https://silentspeaker.onrender.com";
 
 type WebSpeechRecognition = any;
 
