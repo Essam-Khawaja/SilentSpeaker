@@ -1,7 +1,24 @@
-// Header.jsx
+// Header.tsx
 import { Hand, ArrowLeftRight } from "lucide-react";
+import { Dispatch, SetStateAction } from "react";
 
-export default function Header({ mode, setMode, fps, model, mediaPipeLoaded }) {
+type Mode = "sign-to-speech" | "speech-to-sign";
+
+interface HeaderProps {
+  mode: Mode;
+  setMode: Dispatch<SetStateAction<Mode>>;
+  fps: number;
+  model: any; // keep flexible since your model type varies
+  mediaPipeLoaded: boolean;
+}
+
+export default function Header({
+  mode,
+  setMode,
+  fps,
+  model,
+  mediaPipeLoaded,
+}: HeaderProps) {
   return (
     <header className="border-b border-border/50 backdrop-blur-sm bg-background/80 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -33,14 +50,18 @@ export default function Header({ mode, setMode, fps, model, mediaPipeLoaded }) {
           <div className="flex items-center gap-4 text-sm">
             <div className="flex items-center gap-2">
               <div
-                className={`w-2 h-2 rounded-full ${model ? "bg-emerald-500" : "bg-muted"}`}
+                className={`w-2 h-2 rounded-full ${
+                  model ? "bg-emerald-500" : "bg-muted"
+                }`}
               />
               <span className="text-muted-foreground">Model</span>
             </div>
             {mode === "sign-to-speech" && (
               <div className="flex items-center gap-2">
                 <div
-                  className={`w-2 h-2 rounded-full ${mediaPipeLoaded ? "bg-emerald-500" : "bg-muted"}`}
+                  className={`w-2 h-2 rounded-full ${
+                    mediaPipeLoaded ? "bg-emerald-500" : "bg-muted"
+                  }`}
                 />
                 <span className="text-muted-foreground">Camera</span>
               </div>

@@ -15,10 +15,10 @@ export default function SpeechToSign() {
 
       if (SpeechRecognition) {
         recognitionRef.current = new SpeechRecognition();
-        recognitionRef.current.continuous = true;
-        recognitionRef.current.interimResults = true;
+        recognitionRef.current!.continuous = true;
+        recognitionRef.current!.interimResults = true;
 
-        recognitionRef.current.onresult = (event) => {
+        recognitionRef.current!.onresult = (event) => {
           let finalTranscript = "";
 
           for (let i = event.resultIndex; i < event.results.length; i++) {
@@ -38,8 +38,8 @@ export default function SpeechToSign() {
           }
         };
 
-        recognitionRef.current.onerror = () => setIsListening(false);
-        recognitionRef.current.onend = () => setIsListening(false);
+        recognitionRef.current!.onerror = () => setIsListening(false);
+        recognitionRef.current!.onend = () => setIsListening(false);
       }
     }
   }, []);
@@ -48,9 +48,9 @@ export default function SpeechToSign() {
     if (!recognitionRef.current) return;
 
     if (isListening) {
-      recognitionRef.current.stop();
+      recognitionRef.current!.stop();
     } else {
-      recognitionRef.current.start();
+      recognitionRef.current!.start();
       setTranscript("");
     }
     setIsListening(!isListening);
@@ -67,7 +67,9 @@ export default function SpeechToSign() {
               }`}
             >
               <Mic
-                className={`w-12 h-12 ${isListening ? "text-red-500" : "text-primary"}`}
+                className={`w-12 h-12 ${
+                  isListening ? "text-red-500" : "text-primary"
+                }`}
               />
             </div>
             <button
