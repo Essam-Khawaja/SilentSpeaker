@@ -89,4 +89,5 @@ Silent Speak scales accessibility in a practical and ethical way.
 
 
 ## Extra Credits:
+Google MediaPipe and Tracking setup: https://github.com/kinivi/hand-gesture-recognition-mediapipe (Apache 2.0 License)
 
