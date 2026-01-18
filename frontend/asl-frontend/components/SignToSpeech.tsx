@@ -77,7 +77,7 @@ const HAND_CONNECTIONS = [
 const FINGER_TIPS = [4, 8, 12, 16, 20];
 const FINGER_BASES = [1, 5, 9, 13, 17];
 
-export default function ASLDetector() {
+export default function ASLDetector(props: any) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [prediction, setPrediction] = useState<Prediction | null>(null);
