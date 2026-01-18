@@ -2,3 +2,4 @@ fastapi
 uvicorn[standard]
 moviepy
 sign-language-translator
+python-3.12.0
