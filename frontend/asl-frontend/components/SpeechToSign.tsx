@@ -1,11 +1,15 @@
 import { useState, useRef, useEffect } from "react";
 import { Mic, Volume2, Trash2 } from "lucide-react";
 
+const API_BASE =
+  process.env.NEXT_PUBLIC_SIGN_API_BASE || "http://localhost:8000";
+
+type WebSpeechRecognition = any;
+
 export default function SpeechToSign() {
-  const [sentence, setSentence] = useState([]);
-  const [transcript, setTranscript] = useState("");
-  const [isListening, setIsListening] = useState(false);
-  const recognitionRef = useRef(null);
+  const [sentence, setSentence] = useState<string[]>([]);
+  const [transcript, setTranscript] = useState<string>("");
+  const [isListening, setIsListening] = useState<boolean>(false);
 
   // useEffect(() => {
   //   if (typeof window !== "undefined") {
@@ -43,7 +47,27 @@ export default function SpeechToSign() {
   //   }
   // }, []);
 
-  const toggleListening = () => {
+  const startListening = () => {
+    if (!recognitionRef.current) return;
+
+    // Reset state
+    setTranscript("");
+    transcriptRef.current = "";
+    setSentence([]);
+
+    setVideoUrl(null);
+    setTranslatedWords([]);
+    setSkippedWords([]);
+    setStatusMsg("");
+    setErrorMsg("");
+
+    shouldGenerateOnEndRef.current = false;
+
+    recognitionRef.current.start();
+    setIsListening(true);
+  };
+
+  const stopListeningAndGenerate = () => {
     if (!recognitionRef.current) return;
 
     if (isListening) {
@@ -52,7 +76,6 @@ export default function SpeechToSign() {
       // recognitionRef.current!.start();
       setTranscript("");
     }
-    setIsListening(!isListening);
   };
 
   return (
@@ -71,13 +94,15 @@ export default function SpeechToSign() {
                 }`}
               />
             </div>
+
             <button
               onClick={toggleListening}
+              disabled={isGenerating}
               className={`px-8 py-4 rounded-xl font-semibold text-lg transition-all ${
                 isListening
                   ? "bg-red-600 hover:bg-red-700 text-white"
                   : "bg-primary hover:opacity-90 text-primary-foreground"
-              }`}
+              } ${isGenerating ? "opacity-60 cursor-not-allowed" : ""}`}
             >
               {isListening ? "Stop Listening" : "Start Speaking"}
             </button>
@@ -97,38 +122,71 @@ export default function SpeechToSign() {
           <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-4">
             Generated Signs
           </h3>
-          <div className="min-h-[60px] bg-secondary/50 rounded-xl p-4 mb-4 border border-border/50">
-            <p className="text-xl font-medium text-foreground">
-              {sentence.length > 0 ? (
-                sentence.join("")
-              ) : (
-                <span className="text-muted-foreground">
-                  Start speaking to generate signs...
-                </span>
+
+          {(statusMsg || errorMsg) && (
+            <div className="mb-3">
+              {statusMsg && (
+                <p className="text-sm text-muted-foreground">{statusMsg}</p>
               )}
-            </p>
+              {errorMsg && (
+                <p className="text-sm text-red-400 mt-1">{errorMsg}</p>
+              )}
+            </div>
+          )}
+
+          <div className="bg-secondary/50 rounded-xl p-4 mb-4 border border-border/50">
+            {isGenerating ? (
+              <p className="text-muted-foreground">Generating video...</p>
+            ) : videoUrl ? (
+              <div className="space-y-3">
+                <video
+                  key={videoUrl}
+                  src={videoUrl}
+                  controls
+                  autoPlay
+                  playsInline
+                  className="w-full rounded-xl"
+                />
+                <p className="text-xs text-muted-foreground break-all">
+                  Video URL: {videoUrl}
+                </p>
+              </div>
+            ) : (
+              <p className="text-muted-foreground">
+                Stop listening to generate a stitched sign video.
+              </p>
+            )}
           </div>
+
+          <div className="space-y-2 mb-4">
+            <p className="text-sm text-muted-foreground">
+              <span className="font-medium text-foreground">Translated:</span>{" "}
+              {translatedWords.length ? translatedWords.join(", ") : "None"}
+            </p>
+            <p className="text-sm text-muted-foreground">
+              <span className="font-medium text-foreground">Skipped:</span>{" "}
+              {skippedWords.length ? skippedWords.join(", ") : "None"}
+            </p>
+
+            {sentence.length > 0 && (
+              <p className="text-xs text-muted-foreground">
+                (debug letters): {sentence.join("")}
+              </p>
+            )}
+          </div>
+
           <div className="flex gap-2">
             <button
-              onClick={() => {
-                setSentence([]);
-                setTranscript("");
-              }}
+              onClick={clearAll}
               className="flex items-center gap-2 px-4 py-2.5 bg-secondary text-secondary-foreground rounded-xl font-medium text-sm transition-all hover:bg-destructive/20 hover:text-destructive"
             >
               <Trash2 className="w-4 h-4" />
               Clear
             </button>
+
             <button
-              onClick={() => {
-                const text = sentence.join("");
-                if ("speechSynthesis" in window && text.length > 0) {
-                  const utterance = new SpeechSynthesisUtterance(text);
-                  utterance.rate = 0.9;
-                  speechSynthesis.speak(utterance);
-                }
-              }}
-              disabled={sentence.length === 0}
+              onClick={speakOut}
+              disabled={!transcript || transcript.trim().length === 0}
               className="flex items-center gap-2 px-4 py-2.5 bg-accent/20 text-accent rounded-xl font-medium text-sm transition-all hover:bg-accent/30 disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <Volume2 className="w-4 h-4" />
@@ -158,7 +216,7 @@ export default function SpeechToSign() {
             </li>
             <li className="flex gap-3">
               <span className="text-primary">04</span>
-              <span>Watch your speech convert to signs</span>
+              <span>Click "Stop Listening" to generate the sign video</span>
             </li>
           </ul>
         </div>
