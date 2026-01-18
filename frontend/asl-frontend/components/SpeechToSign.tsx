@@ -1,4 +1,3 @@
-// SpeechToSign.jsx
 import { useState, useRef, useEffect } from "react";
 import { Mic, Volume2, Trash2 } from "lucide-react";
 
@@ -8,49 +7,49 @@ export default function SpeechToSign() {
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef(null);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const SpeechRecognition =
-        window.SpeechRecognition || window.webkitSpeechRecognition;
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     const SpeechRecognition =
+  //       window.SpeechRecognition || window.webkitSpeechRecognition;
 
-      if (SpeechRecognition) {
-        recognitionRef.current = new SpeechRecognition();
-        recognitionRef.current!.continuous = true;
-        recognitionRef.current!.interimResults = true;
+  //     if (SpeechRecognition) {
+  //       recognitionRef.current = new SpeechRecognition();
+  //       recognitionRef.current!.continuous = true;
+  //       recognitionRef.current!.interimResults = true;
 
-        recognitionRef.current!.onresult = (event) => {
-          let finalTranscript = "";
+  //       recognitionRef.current!.onresult = (event) => {
+  //         let finalTranscript = "";
 
-          for (let i = event.resultIndex; i < event.results.length; i++) {
-            const transcript = event.results[i][0].transcript;
-            if (event.results[i].isFinal) {
-              finalTranscript += transcript + " ";
-            }
-          }
+  //         for (let i = event.resultIndex; i < event.results.length; i++) {
+  //           const transcript = event.results[i][0].transcript;
+  //           if (event.results[i].isFinal) {
+  //             finalTranscript += transcript + " ";
+  //           }
+  //         }
 
-          if (finalTranscript) {
-            setTranscript((prev) => prev + finalTranscript);
-            const letters = finalTranscript
-              .toLowerCase()
-              .split("")
-              .filter((char) => /[a-z\s]/.test(char));
-            setSentence((prev) => [...prev, ...letters]);
-          }
-        };
+  //         if (finalTranscript) {
+  //           setTranscript((prev) => prev + finalTranscript);
+  //           const letters = finalTranscript
+  //             .toLowerCase()
+  //             .split("")
+  //             .filter((char) => /[a-z\s]/.test(char));
+  //           setSentence((prev) => [...prev, ...letters]);
+  //         }
+  //       };
 
-        recognitionRef.current!.onerror = () => setIsListening(false);
-        recognitionRef.current!.onend = () => setIsListening(false);
-      }
-    }
-  }, []);
+  //       recognitionRef.current!.onerror = () => setIsListening(false);
+  //       recognitionRef.current!.onend = () => setIsListening(false);
+  //     }
+  //   }
+  // }, []);
 
   const toggleListening = () => {
     if (!recognitionRef.current) return;
 
     if (isListening) {
-      recognitionRef.current!.stop();
+      // recognitionRef.current!.stop();
     } else {
-      recognitionRef.current!.start();
+      // recognitionRef.current!.start();
       setTranscript("");
     }
     setIsListening(!isListening);
