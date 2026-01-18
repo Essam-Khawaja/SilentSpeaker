@@ -5,8 +5,8 @@ import { Dispatch, SetStateAction } from "react";
 type Mode = "sign-to-speech" | "speech-to-sign";
 
 interface HeaderProps {
-  mode: Mode;
-  setMode: Dispatch<SetStateAction<Mode>>;
+  mode: string;
+  setMode: Dispatch<SetStateAction<string>>;
   fps: number;
   model: any; // keep flexible since your model type varies
   mediaPipeLoaded: boolean;
